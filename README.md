@@ -52,13 +52,6 @@ Returns:
 
 ## Install
 
-Install from local checkout:
-
-```bash
-npm install file:../capacitor-plugins/capacitor-native-print
-npx cap sync
-```
-
 Install from npm:
 
 ```bash
@@ -68,12 +61,12 @@ npx cap sync
 
 ## Recommended app-side wrapper
 
-Keep app code behind a facade such as `src/lib/certificatePrint.ts`:
+Keep app code behind a facade such as `src/lib/nativePrint.ts`:
 
 ```ts
 import { NativePrint } from '@robusthomes/capacitor-native-print';
 
-export const openCertificatePrint = async (jobName: string) => {
+export const printCurrentPage = async (jobName: string) => {
   const availability = await NativePrint.isAvailable();
   if (!availability.available) {
     throw new Error(availability.reason || 'Printing is unavailable.');
@@ -86,5 +79,5 @@ export const openCertificatePrint = async (jobName: string) => {
 ## Notes
 
 - No additional iOS or Android runtime permissions are required.
-- Change the npm scope before publishing if your registry uses a different organization or username.
+- Published package: `@robusthomes/capacitor-native-print`
 - Source repository: `https://github.com/axpchina/capacitor-native-print`
