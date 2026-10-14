@@ -3,6 +3,8 @@ import { WebPlugin } from '@capacitor/core';
 import type {
   NativePrintAvailabilityResult,
   NativePrintPlugin,
+  PrintPdfOptions,
+  PrintPdfResult,
   PrintCurrentPageOptions,
   PrintCurrentPageResult,
 } from './definitions';
@@ -16,6 +18,10 @@ const createPluginError = (code: string, message: string): PluginError => {
 };
 
 export class NativePrintWeb extends WebPlugin implements NativePrintPlugin {
+  async printPdf(_options: PrintPdfOptions): Promise<PrintPdfResult> {
+    throw createPluginError('UNAVAILABLE', 'Direct local PDF printing is supported only on iOS and Android.');
+  }
+
   async isAvailable(): Promise<NativePrintAvailabilityResult> {
     const available = typeof window !== 'undefined' && typeof window.print === 'function';
 

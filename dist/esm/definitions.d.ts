@@ -12,7 +12,18 @@ export interface NativePrintAvailabilityResult {
     reason?: string;
 }
 export interface NativePrintPlugin {
+    printPdf(options: PrintPdfOptions): Promise<PrintPdfResult>;
     isAvailable(): Promise<NativePrintAvailabilityResult>;
     printCurrentPage(options?: PrintCurrentPageOptions): Promise<PrintCurrentPageResult>;
+}
+/** An existing PDF in app-private cache, files/Documents or temporary storage. */
+export interface PrintPdfOptions {
+    fileUri: string;
+    jobName?: string;
+}
+/** Observable handoff only. Neither outcome proves physical paper completion. */
+export interface PrintPdfResult {
+    platform: 'ios' | 'android';
+    status: 'interaction_completed' | 'cancelled' | 'handed_off';
 }
 //# sourceMappingURL=definitions.d.ts.map

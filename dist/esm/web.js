@@ -5,6 +5,9 @@ const createPluginError = (code, message) => {
     return error;
 };
 export class NativePrintWeb extends WebPlugin {
+    async printPdf(_options) {
+        throw createPluginError('UNAVAILABLE', 'Direct local PDF printing is supported only on iOS and Android.');
+    }
     async isAvailable() {
         const available = typeof window !== 'undefined' && typeof window.print === 'function';
         return {

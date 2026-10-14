@@ -1,7 +1,7 @@
 {
   "name": "@robusthomes/capacitor-native-print",
-  "version": "0.1.0",
-  "description": "Capacitor plugin for opening the native print sheet from the current WebView page.",
+  "version": "0.2.0",
+  "description": "Capacitor 8 plugin for native current-page and app-private PDF printing.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -14,7 +14,13 @@
     "ios/Sources",
     "Package.swift",
     "CapacitorNativePrint.podspec",
-    "README.md"
+    "README.md",
+    "android/vendor/",
+    "CHANGELOG.md",
+    "RELEASE_NOTES.md",
+    "KNOWN_ISSUES.md",
+    "LICENSE",
+    "SECURITY_REVIEW.md"
   ],
   "author": "Robust Homes",
   "license": "MIT",
@@ -48,7 +54,7 @@
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "@capacitor/core": ">=8.0.0"
+    "@capacitor/core": ">=8.0.0 <9.0.0"
   },
   "capacitor": {
     "ios": {

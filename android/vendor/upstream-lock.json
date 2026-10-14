@@ -1,0 +1,14 @@
+{
+  "source": {
+    "url": "https://repo.maven.apache.org/maven2/com/tom-roush/pdfbox-android/2.0.27.0/pdfbox-android-2.0.27.0-sources.jar",
+    "sha256": "340b7e30afa2dc52af2e84c729aba5422eb34302006c9be48a4993e89b1a7f85"
+  },
+  "tag": {
+    "url": "https://codeload.github.com/TomRoush/PdfBox-Android/zip/refs/tags/v2.0.27.0",
+    "sha256": "fa6cb778ef5921ac2fc6d67e32dd989bef7c00726e8dfad62fde4f073045eb71"
+  },
+  "aar": {
+    "url": "https://repo.maven.apache.org/maven2/com/tom-roush/pdfbox-android/2.0.27.0/pdfbox-android-2.0.27.0.aar",
+    "sha256": "30277f879cfd571db2a137582c95516a0d4ea6778e945519bc58ca93d57d88c7"
+  }
+}

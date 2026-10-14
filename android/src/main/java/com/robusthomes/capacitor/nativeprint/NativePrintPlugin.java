@@ -14,6 +14,46 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 
 @CapacitorPlugin(name = "NativePrint")
 public class NativePrintPlugin extends Plugin {
+  private final java.util.concurrent.atomic.AtomicBoolean pdfBusy = new java.util.concurrent.atomic.AtomicBoolean();
+
+  @PluginMethod
+  public void printPdf(PluginCall call) {
+    if (!pdfBusy.compareAndSet(false, true)) {
+      call.reject("A PDF print request is active.", "BUSY"); return;
+    }
+    final android.app.Activity activity = getActivity();
+    if (activity == null) {
+      pdfBusy.set(false); call.reject("Print UI unavailable.", "UNAVAILABLE"); return;
+    }
+    java.util.concurrent.ExecutorService worker = java.util.concurrent.Executors.newSingleThreadExecutor();
+    worker.execute(() -> {
+      PdfFileAdapter adapter;
+      try {
+        adapter = new PdfFileAdapter(getContext(), call.getString("fileUri"),
+          call.getString("jobName", "Document"), worker, () -> pdfBusy.set(false));
+      } catch (PdfFileAdapter.InputException error) {
+        pdfBusy.set(false); worker.shutdown(); call.reject("PDF input could not be prepared.", error.code); return;
+      } catch (Exception error) {
+        pdfBusy.set(false); worker.shutdown(); call.reject("PDF input could not be prepared.", "INVALID_PDF"); return;
+      }
+      activity.runOnUiThread(() -> {
+        try {
+          if (activity.isFinishing() || activity.isDestroyed()) throw new IllegalStateException();
+          PrintManager manager = (PrintManager) activity.getSystemService(Context.PRINT_SERVICE);
+          if (manager == null) throw new IllegalStateException();
+          android.print.PrintJob job = manager.print(call.getString("jobName", "Document"), adapter,
+            new PrintAttributes.Builder().build());
+          if (job == null) throw new IllegalStateException();
+          JSObject result = new JSObject();
+          result.put("platform", "android"); result.put("status", "handed_off");
+          call.resolve(result);
+        } catch (Exception error) {
+          adapter.onFinish(); call.reject("PDF print interaction failed.", "PRINT_FAILED");
+        }
+      });
+    });
+  }
+
   @PluginMethod
   public void isAvailable(PluginCall call) {
     WebView webView = getBridge() != null ? getBridge().getWebView() : null;
